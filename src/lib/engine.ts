@@ -118,6 +118,17 @@ export async function statusUmum(): Promise<StatusUmum> {
       saran: gagal[0].pesan,
     }
   }
+  // Nothing set up yet: say so instead of "Semua aman".
+  if (produk.length === 0) {
+    return { tingkat: 'perhatian', kalimat: 'Belum ada data stok', saran: 'Impor stokmu di halaman Stok.' }
+  }
+  if (channels.length === 0) {
+    return {
+      tingkat: 'perhatian',
+      kalimat: 'Belum ada tempat jualan',
+      saran: 'Minta agent-mu menambahkan tempat jualan dari rancanganmu.',
+    }
+  }
   const restock = produk.filter(perluRestock)
   if (restock.length) {
     return {

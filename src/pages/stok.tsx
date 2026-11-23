@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
-import { Download, Minus, Plus, Upload } from 'lucide-react'
+import { Download, Minus, Package, Plus, Upload } from 'lucide-react'
+import { BelumAdaData } from '@/components/belum-ada-data'
 import { Konfirmasi } from '@/components/konfirmasi'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -99,6 +100,23 @@ export function Stok({ data, muat }: { data: DataDashboard; muat: () => Promise<
 
       <Card>
         <CardContent className="overflow-x-auto">
+          {data.produk.length === 0 ? (
+            <BelumAdaData
+              ikon={Package}
+              isi={
+                <>
+                  Belum ada produk. Unduh sheet stokmu sebagai CSV dengan kolom seperti di <b>format-impor.csv</b>, lalu tekan{' '}
+                  <b>Impor dari file CSV</b>.
+                </>
+              }
+              aksi={
+                <Button size="lg" className="h-12 text-base" onClick={() => fileRef.current?.click()}>
+                  <Upload /> Impor dari file CSV
+                </Button>
+              }
+            />
+          ) : (
+          <>
           <Table className="text-base">
             <TableHeader>
               <TableRow>
@@ -149,6 +167,8 @@ export function Stok({ data, muat }: { data: DataDashboard; muat: () => Promise<
             <b>Cadangan</b> = stok yang tidak ditampilkan, supaya barang terakhir tidak terjual dua kali. <b>Tampil di toko</b> =
             stok induk − cadangan. Angkanya dihitung otomatis dari penjualan per hari.
           </p>
+          </>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Bell, Check, ClipboardCopy, Download, FlaskConical, OctagonX, RefreshCw, Settings, Upload } from 'lucide-react'
+import { Bell, Check, ClipboardCopy, Download, FlaskConical, History, OctagonX, RefreshCw, Settings, Upload } from 'lucide-react'
+import { BelumAdaData } from '@/components/belum-ada-data'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { DataDashboard } from '@/hooks/use-data'
@@ -40,7 +41,9 @@ export function Riwayat({ data }: { data: DataDashboard }) {
         <CardDescription className="text-base">Semua yang dikerjakan dashboard ini, yang terbaru di atas.</CardDescription>
       </CardHeader>
       <CardContent>
-        {data.riwayat.length === 0 && <p className="text-base text-muted-foreground">Belum ada kegiatan.</p>}
+        {data.riwayat.length === 0 && (
+          <BelumAdaData ikon={History} judul="Belum ada kegiatan" isi="Setiap impor, uji coba, dan sync akan tercatat di sini." />
+        )}
         <ol className="flex flex-col divide-y">
           {data.riwayat.map((r) => {
             const Ikon = ikon[r.jenis]

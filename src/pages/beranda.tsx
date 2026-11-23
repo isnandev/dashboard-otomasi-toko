@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Check, ClipboardCopy, ExternalLink, FlaskConical, Loader2, PackagePlus, RefreshCw, Store } from 'lucide-react'
-import { channels, modeDemo } from '@/channels'
-import { aturSiapDemo, buatPesananContoh } from '@/channels/demo'
+import { Check, ClipboardCopy, ExternalLink, FlaskConical, Loader2, RefreshCw, Store } from 'lucide-react'
+import { channels } from '@/channels'
+import { BelumAdaData } from '@/components/belum-ada-data'
 import { Konfirmasi } from '@/components/konfirmasi'
 import { StatusBanner } from '@/components/status-banner'
 import { Badge } from '@/components/ui/badge'
@@ -20,6 +20,8 @@ export function Beranda({ data, muat, keHalaman }: { data: DataDashboard; muat: 
   const [disalin, setDisalin] = useState<string | null>(null)
   const set = data.pengaturan
   const restock = data.produk.filter(perluRestock)
+  // Nothing to sync until there is real stock data and at least one real channel.
+  const belumSiap = data.produk.length === 0 ? 'stok diimpor' : channels.length === 0 ? 'tempat jualan ditambahkan' : null
 
   async function sync(uji: boolean) {
     setSibuk(uji ? 'uji' : 'sync')
@@ -67,7 +69,7 @@ export function Beranda({ data, muat, keHalaman }: { data: DataDashboard; muat: 
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          {set.modeUji && (
+          {set.modeUji && !belumSiap && (
             <div className="flex flex-col gap-3 rounded-lg border border-warning/40 bg-warning/10 p-4 sm:flex-row sm:items-center">
               <FlaskConical className="size-6 shrink-0 text-warning" aria-hidden />
               <p className="flex-1 text-base">
@@ -88,19 +90,23 @@ export function Beranda({ data, muat, keHalaman }: { data: DataDashboard; muat: 
             </div>
           )}
           <div className="grid gap-3 sm:grid-cols-2">
-            <Button size="lg" variant="outline" className="h-14 text-base" onClick={() => sync(true)} disabled={!!sibuk}>
+            <Button size="lg" variant="outline" className="h-14 text-base" onClick={() => sync(true)} disabled={!!sibuk || !!belumSiap}>
               {sibuk === 'uji' ? <Loader2 className="animate-spin" /> : <FlaskConical />}
               Coba dulu (tidak mengubah apa pun)
             </Button>
-            <Button size="lg" className="h-14 text-base" onClick={() => sync(false)} disabled={!!sibuk || set.modeUji || set.jeda}>
+            <Button size="lg" className="h-14 text-base" onClick={() => sync(false)} disabled={!!sibuk || !!belumSiap || set.modeUji || set.jeda}>
               {sibuk === 'sync' ? <Loader2 className="animate-spin" /> : <RefreshCw />}
               Sync sekarang
             </Button>
           </div>
-          {(set.modeUji || set.jeda) && (
-            <p className="text-sm text-muted-foreground">
-              "Sync sekarang" aktif setelah {set.jeda ? 'otomasi tidak dijeda' : 'mode uji dimatikan'}.
-            </p>
+          {belumSiap ? (
+            <p className="text-sm text-muted-foreground">Tombol sync aktif setelah {belumSiap}.</p>
+          ) : (
+            (set.modeUji || set.jeda) && (
+              <p className="text-sm text-muted-foreground">
+                "Sync sekarang" aktif setelah {set.jeda ? 'otomasi tidak dijeda' : 'mode uji dimatikan'}.
+              </p>
+            )
           )}
           <label className="flex items-center justify-between gap-4 rounded-lg border p-4">
             <span>
@@ -116,6 +122,13 @@ export function Beranda({ data, muat, keHalaman }: { data: DataDashboard; muat: 
       {/* Channels as cards. */}
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-semibold">Tempat jualan</h2>
+        {channels.length === 0 && (
+          <BelumAdaData
+            ikon={Store}
+            judul="Belum ada tempat jualan"
+            isi="Tempat jualan ditambahkan oleh agent-mu dari rancanganmu. Kirim screenshot halaman pesanan dan halaman stok marketplace-mu ke agent."
+          />
+        )}
         <div className="grid gap-3 md:grid-cols-3">
           {channels.map((ch) => {
             const st = data.channel.find((s) => s.id === ch.id)
@@ -175,8 +188,6 @@ export function Beranda({ data, muat, keHalaman }: { data: DataDashboard; muat: 
           </Card>
         </section>
       )}
-
-      {modeDemo && <AlatDemo muat={muat} />}
     </div>
   )
 }
@@ -209,9 +220,11 @@ function HasilTerakhir({ hasil }: { hasil: HasilSync | null }) {
 
 function PanduanAwal({ data, keHalaman, onUji }: { data: DataDashboard; keHalaman: (h: string) => void; onUji: () => void }) {
   const langkah = [
-    { judul: 'Periksa stok induk', isi: 'Pastikan daftar produk dan stoknya benar, atau impor dari file.', selesai: data.produk.length > 0, aksi: () => keHalaman('stok'), tombol: 'Buka halaman Stok' },
-    { judul: 'Buka tempat jualan', isi: 'Buka dan login halaman penjual tiap marketplace di Chrome.', selesai: data.channel.length > 0 && data.channel.every((c) => c.siap), aksi: onUji, tombol: 'Cek sekarang' },
-    { judul: 'Coba dulu', isi: 'Lihat apa yang akan berubah, tanpa mengubah apa pun.', selesai: !!data.hasilUji, aksi: onUji, tombol: 'Coba dulu' },
+    { judul: 'Isi stok induk', isi: 'Impor daftar produk dan stokmu dari file CSV.', selesai: data.produk.length > 0, aksi: () => keHalaman('stok'), tombol: 'Buka halaman Stok' },
+    channels.length === 0
+      ? { judul: 'Tambahkan tempat jualan', isi: 'Minta agent-mu menambahkan marketplace dari rancanganmu, lalu muat ulang extension.', selesai: false, aksi: undefined, tombol: undefined }
+      : { judul: 'Buka tempat jualan', isi: 'Buka dan login halaman penjual tiap marketplace di Chrome.', selesai: data.channel.length > 0 && data.channel.every((c) => c.siap), aksi: onUji, tombol: 'Cek sekarang' },
+    { judul: 'Coba dulu', isi: 'Lihat apa yang akan berubah, tanpa mengubah apa pun.', selesai: !!data.hasilUji, aksi: data.produk.length > 0 && channels.length > 0 ? onUji : undefined, tombol: 'Coba dulu' },
   ]
   return (
     <Card className="border-primary/50">
@@ -236,48 +249,14 @@ function PanduanAwal({ data, keHalaman, onUji }: { data: DataDashboard; keHalama
                 <p className="text-base font-semibold">{l.judul}</p>
                 <p className="text-sm text-muted-foreground">{l.isi}</p>
               </div>
-              <Button variant={l.selesai ? 'ghost' : 'outline'} className="h-10" onClick={l.aksi}>
-                {l.tombol}
-              </Button>
+              {l.tombol && (
+                <Button variant={l.selesai ? 'ghost' : 'outline'} className="h-10" onClick={l.aksi} disabled={!l.aksi}>
+                  {l.tombol}
+                </Button>
+              )}
             </li>
           ))}
         </ol>
-      </CardContent>
-    </Card>
-  )
-}
-
-/** Demo-only buttons, for trying the dashboard without a real seller account. */
-function AlatDemo({ muat }: { muat: () => Promise<void> }) {
-  const [logout, setLogout] = useState(false)
-  return (
-    <Card className="border-dashed">
-      <CardHeader>
-        <CardTitle className="text-base">Alat demo</CardTitle>
-        <CardDescription>Hanya untuk mencoba. Hilang setelah tempat jualan asli dipasang.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-wrap gap-2">
-        <Button
-          variant="outline"
-          onClick={async () => {
-            await buatPesananContoh('marketplace-a', 'BRW-01', 2)
-            await tambahRiwayat({ jenis: 'pengaturan', ringkas: 'Demo: pesanan contoh 2 Brownies di Marketplace A' })
-            await muat()
-          }}
-        >
-          <PackagePlus /> Buat pesanan contoh di Marketplace A
-        </Button>
-        <Button
-          variant="outline"
-          onClick={async () => {
-            await aturSiapDemo('marketplace-b', logout)
-            setLogout(!logout)
-            await tambahRiwayat({ jenis: 'pengaturan', ringkas: logout ? 'Demo: Marketplace B login lagi' : 'Demo: Marketplace B logout' })
-            await muat()
-          }}
-        >
-          {logout ? 'Demo: login lagi di Marketplace B' : 'Demo: logout dari Marketplace B'}
-        </Button>
       </CardContent>
     </Card>
   )

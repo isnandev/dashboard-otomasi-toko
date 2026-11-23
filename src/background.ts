@@ -1,6 +1,5 @@
 import { ambil, pengaturan, simpan } from './lib/db'
 import { jalankanSync } from './lib/engine'
-import { isiContohKalauKosong } from './lib/seed'
 
 // Background worker: runs the schedule while Chrome is open.
 // Everything it does is written to the history, so the dashboard shows it.
@@ -18,8 +17,8 @@ async function jadwalkan() {
   await simpan('sync-berikutnya', Date.now() + set.intervalMenit * 60_000)
 }
 
+// No sample data is ever added: the dashboard starts empty and says so.
 chrome.runtime.onInstalled.addListener(async () => {
-  await isiContohKalauKosong()
   await jadwalkan()
   chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') })
 })

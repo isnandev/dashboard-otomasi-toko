@@ -1,12 +1,7 @@
-import { buatChannelDemo } from './demo'
 import type { Channel } from './types'
 
-// The channels the dashboard syncs. Start with the demo channels; replace each
-// one with a real channel built from contoh-marketplace.ts.
-export const channels: Channel[] = [
-  buatChannelDemo('toko-sendiri', 'Toko sendiri (tokokue-ani.id)', 'https://tokokue-ani.id'),
-  buatChannelDemo('marketplace-a', 'Marketplace A', 'https://example.com'),
-  buatChannelDemo('marketplace-b', 'Marketplace B', 'https://example.com'),
-]
-
-export const modeDemo = true
+// The places the shop sells, one file each. Empty on purpose: the template
+// ships no sample or simulated channels, so beginners never mix them up with
+// their real shop. The agent adds each real channel from the rancangan
+// (copy contoh-marketplace.ts; see AGENTS.md, "Adding a real marketplace").
+export const channels: Channel[] = []

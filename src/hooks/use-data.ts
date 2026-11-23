@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ambil, pengaturan, riwayatTerbaru, semuaProduk } from '@/lib/db'
 import { statusUmum } from '@/lib/engine'
-import { isiContohKalauKosong } from '@/lib/seed'
 import type { HasilSync, Pengaturan, Produk, Riwayat, StatusChannel, StatusUmum } from '@/lib/types'
 import { diExtension } from '@/lib/utils'
 
@@ -21,9 +20,6 @@ export function useData() {
   const [data, setData] = useState<DataDashboard | null>(null)
 
   const muat = useCallback(async () => {
-    // In the extension, sample data is loaded once at install (background.ts).
-    // In a normal browser tab (npm run dev) there is no install step, so load it here.
-    if (!diExtension) await isiContohKalauKosong()
     const [produk, riwayat, set, status, channel, hasilTerakhir, hasilUji, berikut] = await Promise.all([
       semuaProduk(),
       riwayatTerbaru(),

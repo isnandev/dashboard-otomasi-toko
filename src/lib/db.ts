@@ -20,7 +20,7 @@ const db = openDB<Skema>('dashboard-toko', 1, {
 })
 
 export const PENGATURAN_AWAL: Pengaturan = {
-  namaToko: 'Toko Kue Ani',
+  namaToko: '', // the owner fills it in Pengaturan; no sample name
   intervalMenit: 15,
   modeUji: true,
   jeda: false,

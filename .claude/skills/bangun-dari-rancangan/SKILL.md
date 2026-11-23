@@ -81,20 +81,26 @@ Work in this order, and after each step build (`npm run build`) and tell the
 user exactly what to look at in the dashboard:
 
 1. **Data:** types, database fields, Stok screen columns, CSV import columns.
-   Update `contoh-impor.csv`. Check: the Stok screen shows their products.
+   Update the header row in `format-impor.csv` (header only, no rows). Check:
+   the user imports **their own** stock file and the Stok screen shows their
+   products.
 2. **Formulas** in `rules.ts` for "Peran AI" and "Batas aman". Check: the
    numbers on the Stok screen make sense to the user.
-3. **Engine steps and rules**, with the demo channels first. Check: "Coba dulu"
-   lists the expected changes in plain language.
-4. **Real channels**, one at a time (see AGENTS.md, "Adding a real
+3. **Real channels**, one at a time (see AGENTS.md, "Adding a real
    marketplace"). Ask for screenshots of the seller pages. Use the
    semantic-debugging skill's selector rules so the channel survives page
-   changes. Check: the channel card says "Siap", and "Coba dulu" reads real
-   orders without changing anything.
+   changes. Check: the channel card says "Siap".
+4. **Engine steps and rules.** Check: "Coba dulu" reads the real orders and
+   lists the expected changes in plain language, without changing anything.
 5. **Schedule and alarms.** Check: the next sync time shows on the cards, and
    a low-stock product produces "Perlu perhatian".
-6. **Remove demo leftovers:** set `modeDemo = false` and remove the demo
-   channels once real ones work, then reset the sample data.
+
+**Never add sample, placeholder or dummy data** anywhere the user can see it:
+no example products, fake orders, simulated channels, "Contoh" names or
+pre-filled fields. A beginner can't tell them apart from their real shop. When
+something is empty, show the `BelumAdaData` component ("Belum ada …") with the
+one next step. Data only enters through the user's own import, their real
+channels, or what they type.
 
 Keep every operation on the dashboard: if you add an automation, add its
 status, its history lines, its button and its pause behaviour too. Use the

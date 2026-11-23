@@ -11,7 +11,9 @@ Code, Codex, Antigravity) dari sebuah *rancangan otomasi*.
   internet.
 - **Semua dikendalikan dari dashboard**, dengan tampilan yang mudah untuk
   pemula.
-- Isinya data contoh fiktif: Toko Kue Ani, dengan tempat jualan simulasi.
+- **Tanpa data contoh.** Dashboard mulai kosong dan menulis "Belum ada data",
+  supaya kamu tidak bingung mana data asli. Isi stokmu lewat impor CSV, dan
+  agent-mu menambahkan tempat jualan dari rancanganmu.
 
 ## Cara pakai dengan AI coding agent
 
@@ -51,14 +53,15 @@ muat ulang pada extension di `chrome://extensions`.
 
 ## Mencoba tanpa memasang
 
-`npm run dev`, lalu buka `http://localhost:5173/dashboard.html`. Semua tombol
-bisa dicoba dengan tempat jualan simulasi.
+`npm run dev`, lalu buka `http://localhost:5173/dashboard.html` untuk melihat
+tampilannya. Sync baru bisa dicoba setelah ada stok dan tempat jualan asli.
 
 ## Impor stok
 
-Halaman **Stok** → **Impor dari file CSV**. Contoh formatnya ada di
-[contoh-impor.csv](contoh-impor.csv). Kolom `sumber` diisi `sendiri`,
-`supplier`, atau `dropship`.
+Halaman **Stok** → **Impor dari file CSV**. Judul kolomnya ada di
+[format-impor.csv](format-impor.csv) (hanya baris judul, tanpa data):
+`kode, nama, sumber, stok_induk, penjualan_per_hari, lama_datang_hari`. Kolom
+`sumber` diisi `sendiri`, `supplier`, atau `dropship`.
 
 ## Batas yang perlu diketahui
 

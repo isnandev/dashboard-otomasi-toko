@@ -45,6 +45,12 @@ agent doesn't, open the matching `SKILL.md` yourself when the task fits:
   and templates (`src/lib/rules.ts`). You (the agent) are the AI.
 - **Every operation is visible and controllable from the dashboard.** Nothing
   runs that the dashboard doesn't show (status, history, buttons).
+- **No sample, placeholder or dummy data, ever.** No example products, fake
+  orders, simulated channels, "Contoh"/"Demo" names, or pre-filled fields. A
+  beginner can't tell them apart from their real shop. When something is
+  empty, show `BelumAdaData` (`src/components/belum-ada-data.tsx`): "Belum ada
+  …" plus the one next step. Data only comes from the user's own CSV import,
+  their real channels, or what they type.
 
 ## Dashboard UX rules (beginners first)
 1. **Status in one sentence** at the top: Semua aman / Perlu perhatian /
@@ -72,7 +78,9 @@ agent doesn't, open the matching `SKILL.md` yourself when the task fits:
 | `src/lib/engine.ts` | The sync engine: used by the dashboard buttons and the schedule |
 | `src/lib/rules.ts` | Formulas: safety stock, restock point, reorder amount, draft template |
 | `src/lib/db.ts` | Local database (IndexedDB), backup/restore |
-| `src/channels/` | One file per place the shop sells. `demo.ts` = simulated; `contoh-marketplace.ts` = template for a real one |
+| `src/channels/` | One file per place the shop sells, registered in `index.ts` (empty at the start). `contoh-marketplace.ts` = code skeleton for a real one, never registered as-is |
+| `src/components/belum-ada-data.tsx` | Empty state ("Belum ada …") used instead of any sample data |
+| `format-impor.csv` | Header row of the CSV import (no data rows) |
 | `src/background.ts` | Schedule (chrome.alarms) and notifications |
 | `public/manifest.json` | Extension manifest. Add host permissions for real channels here |
 | `src/components/ui/` | shadcn/ui components (don't edit by hand; add with `npx shadcn@latest add <name>`) |
@@ -83,7 +91,6 @@ agent doesn't, open the matching `SKILL.md` yourself when the task fits:
 2. Copy `src/channels/contoh-marketplace.ts` and fill in the TODOs. Keep the
    selectors in one `SELECTOR` object.
 3. Add the site to `host_permissions` in `public/manifest.json`.
-4. Register it in `src/channels/index.ts`, and set `modeDemo = false` when no
-   demo channel is left.
+4. Register it in `src/channels/index.ts`.
 5. Have the user test with "Coba dulu" before turning test mode off.
 6. Remind the user to check the marketplace's terms on automating seller pages.

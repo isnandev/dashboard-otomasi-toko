@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import { History, House, Loader2, Package, Settings } from 'lucide-react'
-import { modeDemo } from '@/channels'
-import { Badge } from '@/components/ui/badge'
+import { History, House, Loader2, Package, Settings, Store } from 'lucide-react'
 import { useData } from '@/hooks/use-data'
 import { Beranda } from '@/pages/beranda'
 import { Pengaturan } from '@/pages/pengaturan'
@@ -43,6 +41,7 @@ export default function App() {
   }
 
   const keHalaman = (h: string) => setHalaman(h as IdHalaman)
+  const namaToko = data.pengaturan.namaToko.trim()
 
   return (
     <div className="min-h-screen">
@@ -50,13 +49,18 @@ export default function App() {
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex size-9 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground" aria-hidden>
-              {data.pengaturan.namaToko.charAt(0).toUpperCase()}
+              {namaToko ? namaToko.charAt(0).toUpperCase() : <Store className="size-5" />}
             </div>
             <div>
-              <p className="text-lg font-semibold leading-tight">{data.pengaturan.namaToko}</p>
+              {namaToko ? (
+                <p className="text-lg font-semibold leading-tight">{namaToko}</p>
+              ) : (
+                <button onClick={() => setHalaman('pengaturan')} className="text-lg font-semibold leading-tight text-muted-foreground underline-offset-4 hover:underline">
+                  Nama toko belum diisi
+                </button>
+              )}
               <p className="text-sm text-muted-foreground">Dashboard otomasi</p>
             </div>
-            {modeDemo && <Badge variant="outline" className="ml-1">Data contoh</Badge>}
           </div>
           <nav aria-label="Halaman" className="flex gap-1 overflow-x-auto">
             {HALAMAN.map((h) => (

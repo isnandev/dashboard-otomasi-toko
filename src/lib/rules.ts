@@ -49,7 +49,7 @@ export function tindakanRestock(p: Produk): string {
 /** Template draft (no AI): a reorder message the owner checks before sending. */
 export function drafPesanan(p: Produk, namaToko: string): string {
   return [
-    'Halo, saya dari ' + namaToko + '.',
+    namaToko.trim() ? 'Halo, saya dari ' + namaToko.trim() + '.' : 'Halo.',
     `Saya mau pesan ulang ${p.nama} (${p.kode}) sebanyak ${jumlahPesanUlang(p)}.`,
     'Mohon info total dan perkiraan tanggal kirim. Terima kasih.',
   ].join('\n')
