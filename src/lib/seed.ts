@@ -14,8 +14,20 @@ export const PRODUK_CONTOH: Produk[] = [
   { kode: 'LYG-01', nama: 'Loyang brownies 20x20', sumber: 'dropship', stokInduk: 12, penjualanPerHari: 1, lamaDatangHari: 3 },
 ]
 
+// Calls that overlap (React StrictMode runs effects twice, the 30 s refresh, a
+// data-changed message) share one run, so the sample data and its history
+// entry are added only once.
+let sedangMengisi: Promise<void> | null = null
+
 /** Fills the database with sample data the first time only. */
-export async function isiContohKalauKosong() {
+export function isiContohKalauKosong(): Promise<void> {
+  sedangMengisi ??= isiContoh().finally(() => {
+    sedangMengisi = null
+  })
+  return sedangMengisi
+}
+
+async function isiContoh() {
   if ((await semuaProduk()).length > 0) return
   await simpanProduk(PRODUK_CONTOH)
   // The demo channels start slightly out of sync, so the first test run has something to show.
