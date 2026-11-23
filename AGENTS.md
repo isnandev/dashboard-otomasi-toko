@@ -18,6 +18,16 @@ and ask you to build it.
 - After every change, run `npm run build`. Then tell the user to open
   `chrome://extensions` and press the reload icon on the extension.
 
+## Skills in this repository
+They are in `.claude/skills/`. Claude Code loads them automatically. If your
+agent doesn't, open the matching `SKILL.md` yourself when the task fits:
+
+| Skill | Use it when |
+|---|---|
+| `bangun-dari-rancangan` | The user pastes a "RANCANGAN OTOMASI" or asks to build a shop automation |
+| `semantic-debugging` | Something is wrong or stopped: a "Berhenti" status, a pasted problem report, wrong numbers, a changed marketplace page |
+| `react-best-practices` | Writing or reviewing React code (from Vercel; see its `SOURCE.md` for which rules apply here) |
+
 ## Fixed decisions (don't change without asking)
 - **Outside services go through the Chrome extension**, using pages the user
   already has open and is logged in to (seller centre, WhatsApp Web...). Don't

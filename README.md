@@ -26,6 +26,14 @@ Code, Codex, Antigravity) dari sebuah *rancangan otomasi*.
 Aturan untuk agent ada di [AGENTS.md](AGENTS.md). Claude Code membaca
 `CLAUDE.md`, yang menunjuk ke file yang sama.
 
+Skill yang sudah disertakan di `.claude/skills/`:
+- **bangun-dari-rancangan:** membangun rancanganmu di atas template ini,
+  langkah demi langkah.
+- **semantic-debugging:** mencari penyebab masalah dari laporanmu, termasuk
+  saat tampilan marketplace berubah.
+- **react-best-practices:** dari Vercel (lisensi MIT), supaya kode React-nya
+  rapi.
+
 ## Memasang di Chrome
 
 1. Jalankan `npm install`, lalu `npm run build`. Hasilnya ada di folder `dist`.
