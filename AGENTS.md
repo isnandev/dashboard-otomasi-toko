@@ -17,6 +17,13 @@ and ask you to build it.
   dashboard's "Salin laporan untuk agent" button.
 - After every change, run `npm run build`. Then tell the user to open
   `chrome://extensions` and press the reload icon on the extension.
+- **Don't assume git.** Many users don't have it: this folder may come from
+  the ZIP download (`dashboard-otomasi-toko-main`) and have no `.git`. Never
+  make the user install or set up git. To get the template without git,
+  download
+  `https://github.com/isnandev/dashboard-otomasi-toko/archive/refs/heads/main.zip`
+  and extract it (steps in `.claude/skills/bangun-dari-rancangan/SKILL.md`,
+  section 0).
 
 ## Skills in this repository
 They are in `.claude/skills/`. Claude Code loads them automatically. If your

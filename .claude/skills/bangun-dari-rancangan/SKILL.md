@@ -18,6 +18,35 @@ the template's promises: one dashboard for everything, local-first data, no
 API keys, and formulas instead of AI inside the tool. Read `AGENTS.md` first;
 its rules apply to everything below.
 
+## 0. Make sure the project folder is ready
+
+Check this quietly before step 1, and only tell the user what they must do.
+
+- **The template is here** when the folder has `AGENTS.md` and a
+  `package.json` named `dashboard-otomasi-toko`. If it isn't (the skill was
+  installed on its own, or the user is in an empty folder), get the template
+  into a new folder `tools-toko`:
+  - Run `git --version`. If it works:
+    `git clone https://github.com/isnandev/dashboard-otomasi-toko.git tools-toko`.
+  - **If git is missing, don't ask the user to install it.** Download the ZIP
+    and extract it instead:
+    - URL: `https://github.com/isnandev/dashboard-otomasi-toko/archive/refs/heads/main.zip`
+    - Windows (PowerShell): `Invoke-WebRequest -Uri <URL> -OutFile template.zip`,
+      then `Expand-Archive template.zip -DestinationPath .`
+    - macOS / Linux: `curl -L -o template.zip <URL>`, then `unzip template.zip`
+      (or `tar -xf template.zip`, which also works on Windows 10 and later).
+    - The ZIP extracts to `dashboard-otomasi-toko-main/`. Rename it to
+      `tools-toko`, delete `template.zip`, and work inside `tools-toko`.
+- **A folder from a ZIP has no `.git`.** That is fine. Don't run git commands
+  that need a repository, and don't make the user set up git. If you want a
+  checkpoint before a big change and git is missing, copy the changed files to
+  a `cadangan-kode/` folder instead.
+- **Node.js is needed** for `npm install` and `npm run build`. If
+  `node --version` fails, ask the user to install the LTS version from
+  nodejs.org (the one install this needs), then continue.
+- Run `npm install` and `npm run build` once, so the user can load `dist` in
+  Chrome.
+
 ## 1. Read the rancangan and map it to the template
 
 Write the user a short plan in Bahasa Indonesia (5–8 lines), mapping each

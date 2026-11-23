@@ -15,8 +15,13 @@ Code, Codex, Antigravity) dari sebuah *rancangan otomasi*.
 
 ## Cara pakai dengan AI coding agent
 
-1. Buat salinan template ini: tombol **Use this template** di GitHub, atau
-   minta agent-mu meng-clone repo ini.
+1. Ambil template ini ke komputermu. Paling mudah, tempel ini ke agent-mu:
+   > Ambil template github.com/isnandev/dashboard-otomasi-toko ke folder baru
+   > bernama tools-toko. Kalau git tidak ada di komputerku, unduh ZIP-nya lalu
+   > ekstrak. Setelah itu jalankan npm install dan npm run build.
+
+   Tanpa agent: tombol **Code → Download ZIP** di GitHub, lalu ekstrak. Tidak
+   perlu git.
 2. Buka foldernya di agent-mu (Claude Code, Codex, atau Antigravity).
 3. Tempel rancangan otomasimu, lalu tulis:
    > Bangun rancangan ini di atas template ini. Ikuti AGENTS.md.
