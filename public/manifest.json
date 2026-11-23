@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Dashboard Otomasi Toko",
+  "version": "0.1.0",
+  "description": "Sync stok dan otomasi toko, dikendalikan dari satu dashboard. Data tersimpan di komputermu sendiri.",
+  "action": { "default_title": "Buka dashboard" },
+  "background": { "service_worker": "background.js", "type": "module" },
+  "permissions": ["alarms", "notifications", "tabs", "scripting", "storage"],
+  "host_permissions": [],
+  "icons": { "128": "icon-128.png" }
+}
